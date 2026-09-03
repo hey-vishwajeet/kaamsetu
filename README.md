@@ -1,201 +1,139 @@
 # KaamSetu
 
-**AI-Powered Workforce Employability, Skill Assessment and Job Matching
-System for Civil Workers**
+KaamSetu is a Flutter prototype that connects construction workers with suitable local jobs. This worker-facing milestone uses mock data held in memory; it has no backend, Firebase integration, database, API keys, or environment setup.
 
-> Connecting skills with suitable construction jobs.
+## Features
 
-KaamSetu is an academic project that aims to connect construction
-workers with builders and employers based on skills, experience,
-location and job requirements. The platform also includes a
-skill-assessment module so worker profiles can contain more than
-self-declared skills.
+- Phone and prototype OTP authentication
+- Worker registration and profile review
+- Skill selection and a short assessment
+- Searchable job recommendations and job details
+- In-memory job applications and application status
+- Local notifications
+- Authenticated bottom navigation for Home, Applications, Notifications, and Profile
+- Shared responsive theme and reusable UI components
+- Central route generation with safe invalid-route handling
 
-## Project Goal
+See [PAGES.md](PAGES.md) for a detailed visual and behavior reference for every page.
 
-Construction workers often depend on local contacts and informal
-networks to find work, while builders may struggle to quickly find
-workers with the required trade and experience. KaamSetu provides a
-common platform where workers can create profiles, complete skill
-assessments, discover suitable jobs and apply directly to builders.
+## Prerequisites
 
-## Main Users
+- Git
+- Flutter SDK on the stable channel with Dart 3.12.2 or later
+- Android Studio and Android SDK
+- An Android emulator or a physical Android device with USB debugging enabled
 
--   **Construction Workers:** masons, electricians, plumbers,
-    carpenters, painters and general labourers.
--   **Builders / Employers:** create job requirements and review
-    suitable workers or applicants.
--   **Admin:** manages users, jobs, skills and platform data.
+Check the environment before setup:
 
-## Planned Features
-
-### Worker Application
-
--   Phone/OTP login
--   Worker registration and profile
--   Trade and skill selection
--   Skill assessment
--   Job discovery and search
--   Job details
--   Location-based job recommendations
--   Apply for jobs
--   Application status tracking
--   Notifications
-
-### Builder Dashboard
-
--   Builder login
--   Dashboard overview
--   Create and manage job posts
--   View applicants
--   View worker profiles, skills and experience
--   Review assessment information
--   Accept or reject applications
-
-### Matching System
-
-The recommendation module is planned to consider factors such as:
-
--   Worker skills
--   Skill-assessment result
--   Experience
--   Job requirements
--   Worker/job location
--   Availability
-
-Matching weights and model performance will be evaluated during project
-testing. No accuracy or employment-improvement claims are assumed in
-advance.
-
-## Tech Stack
-
-  Layer                     Technology
-  ------------------------- --------------------------
-  Worker Mobile App         Flutter / Dart
-  Builder Web Dashboard     React + Vite
-  Backend API               Python + FastAPI
-  Database                  PostgreSQL
-  Location Queries          PostGIS
-  Authentication            Firebase Authentication
-  Notifications             Firebase Cloud Messaging
-  AI / ML                   Python, scikit-learn
-  Semantic Skill Matching   Sentence Transformers
-  Maps / Location           Google Maps API
-  Version Control           Git + GitHub
-
-## Proposed Architecture
-
-``` text
-Worker Flutter App                 Builder React Dashboard
-        |                                   |
-        +---------------+-------------------+
-                        |
-                    FastAPI
-                        |
-          +-------------+-------------+
-          |             |             |
-      PostgreSQL    Matching Engine   Firebase
-          |             |
-          +-------------+
-                 |
-          Recommended Jobs
+```bash
+flutter --version
+flutter doctor
 ```
 
-## Worker Flow
+Resolve any Android toolchain warnings from `flutter doctor` before running the application.
 
-``` text
-Login / OTP
-    |
-Registration
-    |
-Worker Profile
-    |
-Skill Selection
-    |
-Skill Assessment
-    |
-Job Recommendations
-    |
-Job Details
-    |
-Apply for Job
-    |
-Application Status
+## Setup
+
+The Flutter project lives directly in the repository root:
+
+```bash
+git clone https://github.com/hey-vishwajeet/kaamsetu.git
+cd kaamsetu
+flutter pub get
 ```
 
-## Current Development Plan
+No `.env` file or external service is required.
 
-The first development milestone is the **frontend**. The worker-facing
-Flutter application and builder dashboard will initially use mock/local
-data so frontend development does not depend on the backend being
-complete.
+## Run
 
-### Initial Frontend Modules
+Start an emulator or connect a device, then run:
 
-1.  Authentication and worker registration
-2.  Worker profile
-3.  Skill selection and assessment
-4.  Worker home and job listing
-5.  Job details and application flow
-6.  Builder dashboard
-7.  Job management
-8.  Applicant and worker profile views
-
-## Repository Structure
-
-The repository can evolve toward the following structure:
-
-``` text
-kaamsetu/
-├── mobile-app/          # Flutter worker application
-├── web-dashboard/      # React builder/admin dashboard
-├── backend/            # FastAPI backend
-├── ai-engine/          # Matching and assessment logic
-├── database/           # Database scripts/schema
-├── docs/               # Project documentation
-└── README.md
+```bash
+flutter devices
+flutter run
 ```
 
-## Getting Started
+To target a specific device:
 
-The project is currently under development. Setup instructions will be
-added as each application module is implemented.
+```bash
+flutter run -d <device-id>
+```
 
-### Prerequisites
+Prototype credentials:
 
-Planned development tools include:
+- Mobile number: any valid 10-digit Indian mobile number beginning with 6, 7, 8, or 9
+- OTP: `123456`
 
--   Git
--   Flutter SDK
--   Android Studio or VS Code
--   Node.js and npm
--   Python
--   PostgreSQL
+## Navigation
 
-## Team
+First-time worker flow:
 
--   **Vishwajeet** --- Frontend lead, project setup and integration
--   **Apurva** --- Worker authentication and profile module
--   **Aboli** --- Job discovery and application module
--   **Vaishnavi** --- Skill assessment and builder dashboard module
+```text
+Splash
+  → Login
+  → OTP
+  → Registration
+  → Profile Review
+  → Skill Selection
+  → Skill Assessment
+  → Home / Recommendations
+  → Job Details
+  → Apply
+  → Application Status
+```
 
-Responsibilities may be adjusted as development progresses.
+The authenticated area uses four persistent bottom destinations:
 
-## Project Status
+- **Home** — job recommendations and job search
+- **Applications** — submitted applications and their status
+- **Notifications** — local account and application updates
+- **Profile** — worker details, skills, editing, and logout
 
-**Status:** In Development
+Onboarding clears obsolete authentication screens after verification and clears the onboarding stack when entering Home. Detail pages are pushed normally, so Android back navigation returns to the correct tab without duplicating screens. Pressing back from another bottom tab returns to Home first. Invalid route names or arguments show a recoverable “Page not found” screen.
 
-Current focus: **Frontend development and core user flows.**
+## Project structure
 
-## Academic Note
+```text
+KaamSetu/
+├── android/                  # Android host project
+├── lib/
+│   ├── mock_data/            # Local prototype jobs and options
+│   ├── models/               # Worker, job, application, notification models
+│   ├── navigation/           # Stateful authenticated app shell
+│   ├── routes/               # Route names, typed arguments, route factory
+│   ├── screens/              # Screens grouped by feature
+│   │   ├── applications/
+│   │   ├── auth/
+│   │   ├── error/
+│   │   ├── home/
+│   │   ├── jobs/
+│   │   ├── notifications/
+│   │   ├── profile/
+│   │   └── skills/
+│   ├── theme/                # Shared colors, spacing, and Material theme
+│   ├── widgets/              # Buttons, fields, cards, states, app bars, nav
+│   ├── app.dart              # Root MaterialApp
+│   └── main.dart             # Application entry point
+├── test/                     # Widget and navigation tests
+├── .gitignore
+├── analysis_options.yaml
+└── pubspec.yaml
+```
 
-KaamSetu is being developed as an engineering academic project.
-Features, matching methods and evaluation metrics described in the
-repository may change during implementation and testing. Experimental
-results will be reported only after they are measured.
+## Quality checks
 
-## License
+Run the same checks used during integration:
 
-This project is currently intended for academic and educational use. A
-formal open-source license can be added later if the team decides to
-release the project publicly.
+```bash
+flutter pub get
+dart format .
+flutter analyze
+flutter test
+```
+
+## Development notes
+
+- Application, notification, and profile changes reset when the app restarts or the user logs out.
+- Assessment scoring and match percentages are fixed prototype values, not professional certification or production matching logic.
+- `.gitignore` excludes build output, Dart caches, local IDE state, environment files, signing keys, and machine-specific Android configuration.
+- Keep the existing Git remote and use normal feature commits. Do not force-push shared branches.
