@@ -1,69 +1,90 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../../routes/app_routes.dart';
-import '../../theme/app_theme.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SecondSplashScreen extends StatefulWidget {
+  const SecondSplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SecondSplashScreen> createState() => _SecondSplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  Timer? _timer;
-
+class _SecondSplashScreenState extends State<SecondSplashScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(milliseconds: 1200), () {
+
+    Timer(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, AppRoutes.login);
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.login,
+        );
       }
     });
   }
 
   @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: Center(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // App Logo
               Container(
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF1FF),
+                  borderRadius: BorderRadius.circular(25),
                 ),
                 child: const Icon(
-                  Icons.handyman,
-                  size: 56,
-                  color: AppColors.primary,
+                  Icons.work_outline_rounded,
+                  size: 55,
+                  color: Color(0xFF3157C8),
                 ),
               ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                'KaamSetu',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
+
+              const SizedBox(height: 30),
+
+              // App Name
               const Text(
-                'Skills se kaam tak',
-                style: TextStyle(color: Colors.white70),
+                "CareerConnect",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF243B70),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Tagline
+              const Text(
+                "Discover opportunities.\nBuild your future.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  color: Colors.black54,
+                ),
+              ),
+
+              const SizedBox(height: 45),
+
+              // Loading Indicator
+              const SizedBox(
+                height: 25,
+                width: 25,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: Color(0xFF3157C8),
+                ),
               ),
             ],
           ),
