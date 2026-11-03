@@ -7,6 +7,7 @@ import '../screens/auth/otp_screen.dart';
 import '../screens/auth/splash_screen.dart';
 import '../screens/error/unknown_route_screen.dart';
 import '../screens/jobs/job_details_screen.dart';
+import '../screens/profile/profile_screen.dart';
 import '../screens/profile/profile_review_screen.dart';
 import '../screens/profile/registration_screen.dart';
 import '../screens/skills/skill_assessment_screen.dart';
@@ -19,7 +20,7 @@ abstract final class AppRouter {
     Widget page;
     switch (settings.name) {
       case AppRoutes.splash:
-        page = const SplashScreen();
+        page = const SecondSplashScreen();
       case AppRoutes.login:
         page = const LoginScreen();
       case AppRoutes.otp:
@@ -54,7 +55,7 @@ abstract final class AppRouter {
       case AppRoutes.home:
         final args = settings.arguments;
         page = args is ProfileArguments
-            ? AppShell(initialProfile: args.profile)
+            ? AppShell(initialProfile: args.profile, initialIndex: 3)
             : const UnknownRouteScreen();
       case AppRoutes.jobDetails:
         final args = settings.arguments;

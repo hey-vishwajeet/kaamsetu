@@ -3,6 +3,7 @@ abstract final class AppRoutes {
   static const login = '/login';
   static const otp = '/login/otp';
   static const registration = '/registration';
+  static const profile = '/profile';
   static const profileReview = '/registration/profile';
   static const skillSelection = '/skills';
   static const skillAssessment = '/skills/assessment';
